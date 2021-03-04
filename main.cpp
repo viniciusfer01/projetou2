@@ -28,11 +28,13 @@ public:
 
 int main() {
     Sculptor Voxel(3,2,4);
+    char cu = 'c';
+    char* cuu = &cu;
 
     Voxel.setColor(1,0,0,1);
     Voxel.putVoxel(1,1,1);
 
-    Voxel.writeOFF();
+    Voxel.writeOFF(cuu);
 
     return 0;
 }
