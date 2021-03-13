@@ -57,6 +57,7 @@ void Sculptor::putVoxel(int x, int y, int z){
 
 }
 
+/*
 void Sculptor::writeOFF(char* filename){
   int total, index;
   ofstream f;
@@ -132,5 +133,6 @@ void Sculptor::writeOFF(char* filename){
     
   }
 }
+*/
 
   
