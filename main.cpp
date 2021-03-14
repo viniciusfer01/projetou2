@@ -131,7 +131,7 @@ void Sculptor::writeOFF(char* filename){
     
   }
 
-  f << total * 8 << " " << total * 6 << "0 \n";
+  f << total * 8 << " " << total * 6 << " 0 \n";
 
   for (x = 0; x < nx; x++)
   {
