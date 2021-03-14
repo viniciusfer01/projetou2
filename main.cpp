@@ -20,7 +20,7 @@ protected:
 public:
   Sculptor(int _nx, int _ny, int _nz);
   ~Sculptor();
-  void setColor(float r, float g, float b, float alpha);
+  void setColor(float red, float green, float blue, float alpha);
   void putVoxel(int x, int y, int z);
   void cutVoxel(int x, int y, int z);
   void putBox(int x0, int x1, int y0, int y1, int z0, int z1);
@@ -36,30 +36,81 @@ int main() {
     Sculptor Voxel(5,5,5);
     Voxel.setColor(1,0,0,1);
     Voxel.putVoxel(1,1,1);
-
-    // *char cu = 'c';
-    // char* cuu = &cu;
-    Voxel.writeOFF(cuu);
+    Voxel.writeOFF((char*)"voxels.off");
 
     return 0;
 }
 
-void Sculptor::cutVoxel(int x, int y, int z){
-  v[x0][y0][z0].isOn = false;
+Sculptor::Sculptor(int _nx, int _ny, int _nz) {
+  nx = _nx; ny = _ny; nz = _nz;
+  r=g=b=a=0.5;
+
+  //o código não está passando daqui... 😭😭😭
+
+  v = new Voxel**[nx];
+
+  for (int i = 0; i < nx; i++) {
+    v[i] = new Voxel*[ny];
+  }
+
+  for (int i = 0; i < nx; i++) {
+    for (int j = 0; j < ny; j++) {
+      v[i][j] = new Voxel[nz];
+    }
+  } 
+
+  for (int i = 0; i < nx; i++) {
+      for (int j = 0; j < ny; j++) {
+          for (int k = 0; k < nz; k++) {
+              v[i][j][k].r = r;
+              v[i][j][k].g = g; 
+              v[i][j][k].b = b; 
+              v[i][j][k].a = a; 
+              v[i][j][k].isOn = false;
+          }
+      }
+  }   
 }
+
+Sculptor::~Sculptor() {
+  cout << "sera que foi?" << endl;
+
+  
+  // //deallocate memory
+  // for (int i = 0; i < nx; i++)
+  //   {
+  //     for (int j = 0; j < ny; j++)
+  //     {
+  //       delete[] v[i][j];
+  //     }
+  //     delete[] v[i];
+  //   }
+  //   delete[] v;
+}
+
+void Sculptor::setColor(float red, float green, float blue, float alpha) {
+  cout << "chegou aqui..." << endl;
+  r = red; g = green; b = blue; a = alpha;
+}
+
+void Sculptor::cutVoxel(int x, int y, int z) {
+  v[x][y][z].isOn = false;
+} 
 
 void Sculptor::putVoxel(int x, int y, int z){
-  v[x0][y0][z0].isOn = true;
-  v[x0][y0][z0].r = r;
-  v[x0][y0][z0].g = g;
-  v[x0][y0][z0].b = b;
-  v[x0][y0][z0].a = a;
+  cout << "chegou aqui..." << endl;
+  v[x][y][z].isOn = true;
+  v[x][y][z].r = r;
+  v[x][y][z].g = g;
+  v[x][y][z].b = b;
+  v[x][y][z].a = a;
 
 }
 
-/*
 void Sculptor::writeOFF(char* filename){
-  int total, index;
+  cout << "chegou aqui..." << endl;
+  int total, index, x, y, z;
+  float lado = 0.5;
   ofstream f;
   total = 0;
   f.open(filename);
@@ -115,24 +166,55 @@ void Sculptor::writeOFF(char* filename){
           index = total * 8;
 
           f << std::fixed;
-          f << 4 << " " << index + 0 << " " << index + 3 << " " << index + 2 << " " index + 1 << " ";
+          f << 4 << " " << index + 0 << " " << index + 3 << " " << index + 2 << " " 
+            << index + 1 << " ";
           f << std::setprecision(2) << v[x][y][z].r << " "
             << std::setprecision(2) << v[x][y][z].g << " "
             << std::setprecision(2) << v[x][y][z].b << " "
             << std::setprecision(2) << v[x][y][z].a << "\n";
 
-          f << 4 << " " << index + 4 << " " << index + 5 << " " << index + 6 << " " index + 7 << " ";
+          f << 4 << " " << index + 4 << " " << index + 5 << " " << index + 6 << " " 
+            << index + 7 << " ";
           f << std::setprecision(2) << v[x][y][z].r << " "
             << std::setprecision(2) << v[x][y][z].g << " "
             << std::setprecision(2) << v[x][y][z].b << " "
             << std::setprecision(2) << v[x][y][z].a << "\n";
+
+          f << 4 << " " << index + 0 << " " << index + 1 << " " << index + 5 << " " 
+            << index + 4 << " ";
+          f << std::setprecision(2) << v[x][y][z].r << " "
+            << std::setprecision(2) << v[x][y][z].g << " "
+            << std::setprecision(2) << v[x][y][z].b << " "
+            << std::setprecision(2) << v[x][y][z].a << "\n";
+          
+          f << 4 << " " << index + 0 << " " << index + 4 << " " << index + 7 << " " 
+            << index + 3 << " ";
+          f << std::setprecision(2) << v[x][y][z].r << " "
+            << std::setprecision(2) << v[x][y][z].g << " "
+            << std::setprecision(2) << v[x][y][z].b << " "
+            << std::setprecision(2) << v[x][y][z].a << "\n";
+
+          f << 4 << " " << index + 3 << " " << index + 7 << " " << index + 6 << " " 
+            << index + 2 << " ";
+          f << std::setprecision(2) << v[x][y][z].r << " "
+            << std::setprecision(2) << v[x][y][z].g << " "
+            << std::setprecision(2) << v[x][y][z].b << " "
+            << std::setprecision(2) << v[x][y][z].a << "\n";
+
+          f << 4 << " " << index + 1 << " " << index + 2 << " " << index + 6 << " " 
+            << index + 5 << " ";
+          f << std::setprecision(2) << v[x][y][z].r << " "
+            << std::setprecision(2) << v[x][y][z].g << " "
+            << std::setprecision(2) << v[x][y][z].b << " "
+            << std::setprecision(2) << v[x][y][z].a << "\n";
+
+          total++;
         }
-      }
-      
-    }
-    
+      } 
+    } 
   }
+  f.close();
 }
-*/
+
 
   
