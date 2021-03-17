@@ -36,6 +36,7 @@ int main() {
     Sculptor Voxel(5,5,5);
     Voxel.setColor(1,0,0,1);
     Voxel.putVoxel(1,1,1);
+    
     Voxel.writeOFF((char*)"voxels.off");
 
     return 0;
@@ -44,8 +45,6 @@ int main() {
 Sculptor::Sculptor(int _nx, int _ny, int _nz) {
   nx = _nx; ny = _ny; nz = _nz;
   r=g=b=a=0.5;
-
-  //o código não está passando daqui... 😭😭😭
 
   v = new Voxel**[nx];
 
@@ -89,7 +88,7 @@ Sculptor::~Sculptor() {
 }
 
 void Sculptor::setColor(float red, float green, float blue, float alpha) {
-  cout << "chegou aqui..." << endl;
+  // cout << "chegou aqui..." << endl;
   r = red; g = green; b = blue; a = alpha;
 }
 
@@ -215,6 +214,5 @@ void Sculptor::writeOFF(char* filename){
   }
   f.close();
 }
-
 
   
